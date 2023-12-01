@@ -14,7 +14,7 @@ export default function App() {
     const [wantsToDraw, setWantsToDraw] = React.useState(true)
     const [resetRequested, setResetRequested] = React.useState(false)
     
-    console.log(wantsToDraw)
+    
     
 	function reset() {
         setResetRequested(true)
@@ -74,19 +74,41 @@ export default function App() {
         
     4. You should only add to the code below. Nothing else needs to be changed anywhere in this or 
        any other file!
+       
 */
 
+    
+    const toggleDown = (event) =>{
+       setMouseDown(!mouseDown)
+    }
+    
+    const fillPixel = (event) =>{
+        const {id}= event.target
+
+        if(mouseDown)
+        {
+            setPixels(prevPixels=>prevPixels.map((pixel)=>{
+                if(pixel.id === id){
+                    return {id, filled: wantsToDraw}
+                }
+                return pixel
+            }))
+        }
+    }
+    
+    
 	const pixelElements = pixels.map((pixel) => (
 		<div
 			key={pixel.id}
             id={pixel.id}
 			className={`pixel ${pixel.filled ? "filled" : "empty"}`}
+            onMouseEnter={fillPixel}
 		></div>
 	))
 
-
+  
     return (
-    	<div className="wrapper">
+    	<div className="wrapper" onMouseUp={toggleDown} onMouseDown={toggleDown}>
     		<div className={`sketch-o-matic-container ${resetRequested && "shake-horizontal"}`}>
     			<h1>Sketch-o-Matic</h1>
     			<div
